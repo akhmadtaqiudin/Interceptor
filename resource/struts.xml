@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+    <constant name="struts.devMode" value="true"/>
+    <package name="ContohInterceptor" extends="struts-default" namespace="/">
+    
+    	<!--mendeklarasikan dan memanggil class interceptor -->
+    	<interceptors>
+    		<interceptor name="authinterceptorLogin" class="com.id.taqi.action.InterceptorAction" />
+    		<interceptor-stack name="authStack">
+				<interceptor-ref name="authinterceptorLogin"/>
+				<interceptor-ref name="defaultStack"/>
+				<interceptor-ref name="basicStack"/>
+			</interceptor-stack>
+    	</interceptors>
+    	
+    	<global-results>
+			<result name="login">/login.jsp</result>
+		</global-results>
+		
+    	<action name="Login">
+    		<result name="input">/login.jsp</result>
+    		<result name="success">/login.jsp</result>
+    		<result name="error">/login.jsp</result>
+    	</action>
+    	<action name="authentication" class="com.id.taqi.action.UserAction" method="logIn">
+    		<result name="success">/home.jsp</result>
+    		<result name="error">/login.jsp</result>
+    	</action>
+    	<action name="LogOut" class="com.id.taqi.action.UserAction" method="logOut">
+    		<result name="success">/login.jsp</result>
+    		<result name="error">/login.jsp</result>
+    	</action>
+    	<action name="Home">
+    		<interceptor-ref name="authStack"/>
+    		<result name="input">/home.jsp</result>
+    		<result name="success">/home.jsp</result>
+    		<result name="error">/home.jsp</result>
+    	</action>
+    </package>
+</struts>
